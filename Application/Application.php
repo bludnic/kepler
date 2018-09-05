@@ -265,6 +265,14 @@ class Application {
    * @return instance
    */
   public function makeObjects() {
+    // Load providers
+    foreach (static::$container->get('providers') as $key => $value) {
+      $provider = static::$container->make($value, [
+        'container' => static::$container
+      ]);
+      $provider->register();
+    }
+
     // Load Sidebars
     foreach (static::$container->get('sidebars') as $key => $value) {
       static::$container->make($value);

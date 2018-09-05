@@ -21,7 +21,7 @@ if (!function_exists('app')) {
 
 if (!function_exists('view')) {
   function view($view = null, $data = []) {
-    return app('Framework\View\View')->render($view, $data);
+    return app('view')->render($view, $data);
   }
 }
 
