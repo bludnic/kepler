@@ -25,31 +25,11 @@ if (!function_exists('view')) {
   }
 }
 
-if (!function_exists('config')) {
-  function config($key = null) {
-    if (isset($key)) {
-      return app($key);
-    }
-    return null;
-  }
-}
-
 if (!function_exists('url')) {
   function url($path = '') {
     $uri = app('paths')['uri'];
     $path = trim($path, '\/');
 
     return $uri . ($path ? '/' . $path : $path);
-  }
-}
-
-if (!function_exists('controller')) {
-  function controller($controllerMethod, $params = []) {
-    $controllerMethod = explode('@', $controllerMethod);
-
-    $controller = 'Theme\\Controllers\\' . $controllerMethod[0];
-    $method = $controllerMethod[1];
-
-    return Application::getContainer()->call([$controller, $method], $params);
   }
 }
