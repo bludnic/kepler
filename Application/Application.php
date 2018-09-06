@@ -288,6 +288,10 @@ class Application {
       static::$container->make($value);
     }
 
+    // Load Assets
+    $assets = static::$container->get('assets');
+    static::$container->make($assets);
+
     // Load Templates
     //$this->container->make($this->container->get('templates'));
   }
