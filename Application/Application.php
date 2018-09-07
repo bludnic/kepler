@@ -288,6 +288,10 @@ class Application {
       static::$container->make($value);
     }
 
+    // Register Navs
+    $navs = static::$container->get('navs');
+    static::$container->make($navs);
+
     // Load Assets
     $assets = static::$container->get('assets');
     static::$container->make($assets);
