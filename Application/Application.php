@@ -51,6 +51,15 @@ class Application {
   private $builder;
 
   /**
+   * List of providers instance.
+   *
+   * We save providers instance for
+   * call $provider->boot() after app
+   * ready.
+   */
+  private $providers = [];
+
+  /**
    * Create a new Application instance.
    *
    * @param  string|null  $basePath
@@ -67,6 +76,7 @@ class Application {
     $this->createContainer();
 
     $this->makeObjects();
+    $this->bootProviders();
     // $this->registerBaseBindings();
   }
 
@@ -260,7 +270,7 @@ class Application {
   }
 
   /**
-   * Make objects.
+   * Make objects & Register providers.
    *
    * @return instance
    */
@@ -271,6 +281,7 @@ class Application {
         'container' => static::$container
       ]);
       $provider->register();
+      $this->providers[] = $provider;
     }
 
     // Load Sidebars
@@ -298,5 +309,16 @@ class Application {
 
     // Load Templates
     //$this->container->make($this->container->get('templates'));
+  }
+
+  /**
+   * Boot ServiceProviders after register all.
+   *
+   * @return void
+   */
+  private function bootProviders() {
+    foreach ($this->providers as $provider) {
+      $provider->boot();
+    }
   }
 }
