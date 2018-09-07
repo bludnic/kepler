@@ -47,4 +47,13 @@ class TwigView implements View {
   public function render($template, $data = []) {
     return $this->engine->render($template, $data);
   }
+
+  /**
+   * Share objects in Twig.
+   *
+   * @return void
+   */
+  public function share($key, $value) {
+    $this->engine->addGlobal($key, $value);
+  }
 }

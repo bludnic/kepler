@@ -21,6 +21,9 @@ if (!function_exists('app')) {
 
 if (!function_exists('view')) {
   function view($view = null, $data = []) {
+    if (is_null($view)) {
+      return app('view');
+    }
     return app('view')->render($view, $data);
   }
 }
