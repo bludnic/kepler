@@ -10,9 +10,11 @@ class PostQuery {
   }
 
   private function getPosts($args) {
+    global $wp_query;
     $items = [];
+
     if (is_null($args)) {
-      $items = get_posts();
+      $items = $wp_query->posts;
     } else {
       $items = get_posts($args);
     }
