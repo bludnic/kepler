@@ -33,6 +33,7 @@ class TwigView implements View {
     $this->engine->addFunction($wp_head);
     $this->engine->addFunction($wp_footer);
     $this->engine->addFunction(new Twig_Function('__', '__'));
+    $this->engine->addFunction(new Twig_Function('_n', '_n'));
     $this->engine->addFunction(new Twig_Function('language_attributes', 'language_attributes'));
     $this->engine->addFunction(new Twig_Function('bloginfo', 'bloginfo'));
   }
