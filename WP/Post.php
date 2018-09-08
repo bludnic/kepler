@@ -34,12 +34,20 @@ class Post {
     $this->commentCount = $this->post->comment_count;
   }
 
-  public function preview() {
+  public function link() {
+    return get_permalink($this->id);
+  }
+
+  public function preview($words = 55) {
     if (!empty($this->excerpt)) {
       return $this->excerpt;
     } else {
-      return wp_trim_words($this->content, 55, '...');
+      return wp_trim_words($this->content, $words, '...');
     }
+  }
+
+  public function date() {
+    return get_the_date(null, $this->id);
   }
 
   public function thumbnail() {
