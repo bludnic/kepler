@@ -57,4 +57,13 @@ class TwigView implements View {
   public function share($key, $value) {
     $this->engine->addGlobal($key, $value);
   }
+
+  /**
+   * Define functions in twig.
+   *
+   * @return void
+   */
+  public function define($name, $fn) {
+    $this->engine->addFunction(new Twig_Function($name, $fn));
+  }
 }
