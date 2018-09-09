@@ -307,6 +307,10 @@ class Application {
     $assets = static::$container->get('assets');
     static::$container->make($assets);
 
+    // Load Customizer
+    $customizer = static::$container->get('customizer');
+    static::$container->set('customizer', static::$container->make($customizer));
+
     // Load Templates
     //$this->container->make($this->container->get('templates'));
   }
