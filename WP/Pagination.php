@@ -162,17 +162,6 @@ class Pagination implements IteratorAggregate {
       $this->pages[] = $page;
     }
   }
-/*
-1. Check if numOfPages is too few. Show all.
-  for ($i = 1; $i <= $this->max; $i++)
-
-2. Check if $this->current == $this->max. Show from $this->max - $leftSize
-  foreach ($i = $start; $i <= $this->max; $i++)
-
-3. Check if $this->current >= $this->max - $rightSize
-  $start = $this->max - $this->current
-  for ($i = $start; $i <= $this->max; $i++)
- */
 
   /**
    * IteratorAggregate method.
