@@ -2,7 +2,11 @@
 
 namespace Framework\WP;
 
-class Pagination {
+use IteratorAggregate;
+use ArrayIterator;
+use Traversable;
+
+class Pagination implements IteratorAggregate {
   public $pages = [];
 
   /**
@@ -72,5 +76,17 @@ class Pagination {
 
       $this->pages[] = $page;
     }
+  }
+
+  public function set($key, $val){
+    $this->pages[$key] = $val;
+  }
+
+  public function get($key){
+    return $this->pages[$key];
+  }
+
+  public function getIterator(): Traversable {
+    return new ArrayIterator($this->pages);
   }
 }
