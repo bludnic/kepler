@@ -113,39 +113,29 @@ class Pagination implements IteratorAggregate {
    * @return void
    */
   public function createPagination() {
-    $numOfPages = $this->options['leftSize'] + $this->options['rightSize'];
-
     // If too few pages, show all
-    if ($this->max < $numOfPages) {
-      for ($i = 1; $i <= $this->max; $i++) {
-        $page = [
-          'title' => $i,
-          'link' => get_pagenum_link($i)
-        ];
+    $leftPlusRight = $this->options['leftSize'] + $this->options['rightSize'];
+    if ($this->max < $leftPlusRight) {
+      $this->eachPages(1, $this->max);
+      return;
+    }
 
-        // If is current
-        if ($i == $this->page) {
-          $page['current'] = true;
-        }
-
-        $this->pages[] = $page;
-      }
+    // If current page is near $this->max
+    $nearRight = $this->max - $this->options['leftSize'];
+    if ($this->page >= $nearRight) {
+      $this->eachPages($nearRight, $this->max);
       return;
     }
 
     // Left Size
-    for ($i = 1; $i <= $this->options['leftSize']; $i++) {
-      $page = [
-        'title' => $i,
-        'link' => get_pagenum_link($i)
-      ];
+    $leftLeftSize = floor($this->options['leftSize'] / 2);
+    $startPage = 1;
 
-      if ($i == $this->page) {
-        $page['current'] = true;
-      }
-
-      $this->pages[] = $page;
+    if ($this->page > $leftLeftSize) {
+      $startPage = $this->page - $leftLeftSize;
     }
+
+    $this->eachPages($startPage, $startPage + $this->options['leftSize'] - 1);
 
     // Dots
     $this->pages[] = [
@@ -154,19 +144,35 @@ class Pagination implements IteratorAggregate {
     ];
 
     // Right size
-    for ($i = $this->max - $this->options['rightSize'] + 1; $i <= $this->max; $i++) {
+    $this->eachPages($this->max - $this->options['rightSize'] + 1, $this->max);
+  }
+
+  private function eachPages($start, $end) {
+    for ($i = $start; $i <= $end; $i++) {
       $page = [
         'title' => $i,
         'link' => get_pagenum_link($i)
       ];
 
+      // If is current
       if ($i == $this->page) {
         $page['current'] = true;
       }
 
       $this->pages[] = $page;
     }
-  } 
+  }
+/*
+1. Check if numOfPages is too few. Show all.
+  for ($i = 1; $i <= $this->max; $i++)
+
+2. Check if $this->current == $this->max. Show from $this->max - $leftSize
+  foreach ($i = $start; $i <= $this->max; $i++)
+
+3. Check if $this->current >= $this->max - $rightSize
+  $start = $this->max - $this->current
+  for ($i = $start; $i <= $this->max; $i++)
+ */
 
   /**
    * IteratorAggregate method.
