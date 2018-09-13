@@ -14,6 +14,7 @@ class Post {
   public $type;
   public $password;
   public $commentCount;
+  public $authorId;
 
   private $post;
 
@@ -32,6 +33,7 @@ class Post {
     $this->type = $this->post->post_type;
     $this->password = $this->post->post_password;
     $this->commentCount = $this->post->comment_count;
+    $this->authorId = $this->post->post_author;
   }
 
   public function link() {
@@ -52,5 +54,9 @@ class Post {
 
   public function thumbnail() {
     //
+  }
+
+  public function author() {
+    return get_the_author_meta('display_name', $this->authorId);
   }
 }
