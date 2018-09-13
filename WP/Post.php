@@ -54,8 +54,8 @@ class Post {
     return get_the_date(null, $this->id);
   }
 
-  public function thumbnail() {
-    //
+  public function thumbnail($size = 'post-thumbnail') {
+    return get_the_post_thumbnail_url($this->id, $size);
   }
 
   public function author() {
