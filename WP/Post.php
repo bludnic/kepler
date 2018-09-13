@@ -26,7 +26,9 @@ class Post {
 
     $this->id = $this->post->ID;
     $this->title = $this->post->post_title;
-    $this->content = $this->post->post_content;
+    // replace break line with <p>
+    // https://wordpress.stackexchange.com/questions/165583/get-post-content-with-p-tags
+    $this->content = apply_filters('the_content', $this->post->post_content);
     $this->excerpt = $this->post->post_excerpt;
     $this->date = $this->post->post_date;
     $this->status = $this->post->post_status;
