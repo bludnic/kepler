@@ -311,6 +311,10 @@ class Application {
     $customizer = static::$container->get('customizer');
     static::$container->set('customizer', static::$container->make($customizer));
 
+    // Load Supports
+    $supports = static::$container->get('supports');
+    static::$container->set('supports', static::$container->make($supports));
+
     // Load Templates
     //$this->container->make($this->container->get('templates'));
   }
