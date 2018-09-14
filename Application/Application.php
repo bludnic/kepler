@@ -282,7 +282,8 @@ class Application {
       'widgets',
       'navs',
       'assets',
-      'supports'
+      'supports',
+      'customizer'
     ];
 
     $container = static::$container;
@@ -297,15 +298,15 @@ class Application {
             $container->make($class);
           }
         }
-      } elseif (class_exists($abstract)) {
+      } elseif (is_string($abstract) && class_exists($abstract)) {
         $container->make($abstract);
       }
     }
 
     // We need customizer instance for access
     // $customizer->getOption method
-    $customizer = $container->get('customizer');
-    $container->set('customizer', $customizer);
+    // $customizer = $container->get('customizer');
+    // $container->set('customizer', $customizer);
 
     // Load Templates
     //$this->container->make($this->container->get('templates'));
