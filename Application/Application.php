@@ -75,7 +75,8 @@ class Application {
     $this->autoload();
     $this->createContainer();
 
-    $this->makeObjects();
+    $this->registerProviders();
+    $this->createInstances();
     $this->bootProviders();
     // $this->registerBaseBindings();
   }
@@ -270,53 +271,65 @@ class Application {
   }
 
   /**
-   * Make objects & Register providers.
+   * Create class instances.
    *
    * @return instance
    */
-  public function makeObjects() {
-    // Load providers
-    foreach (static::$container->get('providers') as $key => $value) {
-      $provider = static::$container->make($value, [
-        'container' => static::$container
-      ]);
-      $provider->register();
-      $this->providers[] = $provider;
+  public function createInstances() {
+    $classes = [
+      'sidebars',
+      'metaboxes',
+      'widgets',
+      'navs',
+      'assets',
+      'supports'
+    ];
+
+    $container = static::$container;
+
+    // Make objects
+    foreach ($classes as $key) {
+      $abstract = $container->get($key);
+
+      if (is_array($abstract)) {
+        foreach($abstract as $class) {
+          if (class_exists($class)) {
+            $container->make($class);
+          }
+        }
+      } elseif (class_exists($abstract)) {
+        $container->make($abstract);
+      }
     }
 
-    // Load Sidebars
-    foreach (static::$container->get('sidebars') as $key => $value) {
-      static::$container->make($value);
-    }
-
-    // Load Metaboxes
-    foreach (static::$container->get('metaboxes') as $key => $value) {
-      static::$container->make($value);
-    }
-
-    // Load Widgets
-    foreach (static::$container->get('widgets') as $key => $value) {
-      static::$container->make($value);
-    }
-
-    // Register Navs
-    $navs = static::$container->get('navs');
-    static::$container->make($navs);
-
-    // Load Assets
-    $assets = static::$container->get('assets');
-    static::$container->make($assets);
-
-    // Load Customizer
-    $customizer = static::$container->get('customizer');
-    static::$container->set('customizer', static::$container->make($customizer));
-
-    // Load Supports
-    $supports = static::$container->get('supports');
-    static::$container->set('supports', static::$container->make($supports));
+    // We need customizer instance for access
+    // $customizer->getOption method
+    $customizer = $container->get('customizer');
+    $container->set('customizer', $customizer);
 
     // Load Templates
     //$this->container->make($this->container->get('templates'));
+  }
+
+  /**
+   * Register all providers.
+   *
+   * @return void
+   */
+  private function registerProviders() {
+    $providers = static::$container->get('providers');
+
+    if (is_array($providers)) {
+      foreach ($providers as $class) {
+        $provider = static::$container->make($class, [
+          'container' => static::$container
+        ]);
+
+        $provider->register();
+
+        $this->providers[] = $provider;
+      }
+    }
   }
 
   /**
