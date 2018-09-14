@@ -32,6 +32,13 @@ class Site {
    */
   public $bodyClass;
 
+  /**
+   * Website home URL.
+   *
+   * @var string
+   */
+  public $url;
+
   public function __construct() {
     $this->setBaseProperties();
   }
@@ -54,5 +61,6 @@ class Site {
     $this->languageAttributes = get_language_attributes();
     $this->charset = get_bloginfo('charset');
     $this->bodyClass = get_body_class();
+    $this->url = get_home_url();
   }
 }
