@@ -19,7 +19,7 @@ class Templates {
    *
    * @var string
    */
-  protected $templatesPath = 'templates';
+  protected $templatesPath = 'templates/';
 
   /**
    * Base path of theme/plugin.
