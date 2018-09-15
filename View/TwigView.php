@@ -36,6 +36,7 @@ class TwigView implements View {
     $this->engine->addFunction(new Twig_Function('_n', '_n'));
     $this->engine->addFunction(new Twig_Function('language_attributes', 'language_attributes'));
     $this->engine->addFunction(new Twig_Function('bloginfo', 'bloginfo'));
+    $this->engine->addFunction(new Twig_Function('dynamic_sidebar', 'dynamic_sidebar'));
   }
 
   private function registerGlobals() {
