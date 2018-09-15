@@ -117,6 +117,10 @@ class Application {
    */
   protected function autoload() {
     $this->builder->addDefinitions($this->basePath() . '/config/autoload.php');
+
+    // @TODO
+    // Create method addDefinitions and merge loadConfig() & autoload()
+    do_action('theme_container_add_definitions', $this->builder);
   }
 
   /**
