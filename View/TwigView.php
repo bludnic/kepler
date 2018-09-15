@@ -20,6 +20,7 @@ class TwigView implements View {
    */
   public function __construct($path = '') {
     $loader = new Twig_Loader_Filesystem($path);
+    do_action('twig_setup_loader', $loader);
     $this->engine = new Twig_Environment($loader);
 
     $this->registerFunctions();
