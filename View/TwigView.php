@@ -27,19 +27,43 @@ class TwigView implements View {
     $this->registerGlobals();
   }
 
+  /**
+   * Share WP functions to Twig.
+   *
+   * @return void
+   */
   private function registerFunctions() {
-    $wp_head = new Twig_Function('wp_head', 'wp_head');
-    $wp_footer = new Twig_Function('wp_footer', 'wp_footer');
+    $functions = [
+      // Theme functions
+      'wp_head',
+      'wp_footer',
+      'language_attributes',
+      'bloginfo',
+      'dynamic_sidebar',
 
-    $this->engine->addFunction($wp_head);
-    $this->engine->addFunction($wp_footer);
-    $this->engine->addFunction(new Twig_Function('__', '__'));
-    $this->engine->addFunction(new Twig_Function('_n', '_n'));
-    $this->engine->addFunction(new Twig_Function('language_attributes', 'language_attributes'));
-    $this->engine->addFunction(new Twig_Function('bloginfo', 'bloginfo'));
-    $this->engine->addFunction(new Twig_Function('dynamic_sidebar', 'dynamic_sidebar'));
+      // i18n functions
+      '__',
+      '_n',
+      '_x',
+      '_nx',
+      'esc_html__',
+      'esc_attr_x',
+      'esc_html_x',
+      '_e',
+      '_ex',
+      'esc_html_e'
+    ];
+
+    foreach ($functions as $function) {
+      $this->engine->addFunction(new Twig_Function($function, $function));
+    }
   }
 
+  /**
+   * Share global variables to Twig.
+   *
+   * @return void
+   */
   private function registerGlobals() {
     $classes = get_body_class();
     $classesString = implode(' ', $classes);
@@ -52,7 +76,7 @@ class TwigView implements View {
   }
 
   /**
-   * Share objects in Twig.
+   * Helper method for share variables to Twig.
    *
    * @return void
    */
@@ -61,7 +85,7 @@ class TwigView implements View {
   }
 
   /**
-   * Define functions in twig.
+   * Helper method for share functions to Twig.
    *
    * @return void
    */
