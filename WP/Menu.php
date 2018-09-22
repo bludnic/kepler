@@ -8,12 +8,17 @@ class Menu {
 
   public function __construct($slug) {
     $this->slug = $slug;
-    $this->items = $this->getMenuItems();
-    $this->orderChildren();
+    
+    $items = $this->getMenuItems();
+    $itemsTree = $this->buildMenuItemsTree($items);
+
+    $this->items = $itemsTree;
   }
 
   /**
-   * @return array MenuItem
+   * Get navigation MenuItems. 
+   *
+   * @return array
    */
   private function getMenuItems() {
     $items = [];
@@ -30,26 +35,28 @@ class Menu {
   }
 
   /**
-   * @return void
+   * Build MenuItems tree.
+   *
+   * @return array
    */
-  private function orderChildren() {
-    foreach($this->items as $key => $item) {
-      if ($item->parent != 0) {
-        $this->addChild($item);
-        unset($this->items[$key]);
-      }
-    }
-  }
+  private function buildMenuItemsTree($items) {
+    $children = [];
 
-  /**
-   * @param  MenuItem  $item
-   * @return void
-   */
-  private function addChild(MenuItem $child) {
-    foreach ($this->items as $key => $item) {
-      if ($item->id == $child->parent) {
-        $this->items[$key]->children[] = $child;
+    // Indexing items by parent key
+    foreach ($items as $item) {
+      $children[$item->parent][] = $item;
+    }
+
+    // Looping through each MenuItem again, adding itself
+    // to its parent's MenuItem list. The reference is
+    // important here.
+    foreach ($items as $item) {
+      if (isset($children[$item->id])) {
+        $item->children = $children[$item->id];
       }
     }
+
+    // Return tree
+    return $children[0];
   }
 }
