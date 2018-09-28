@@ -71,14 +71,15 @@ class Application {
     }
 
     $this->createBuilder();
-    $this->loadConfig();
-    $this->autoload();
+    $this->loadConfigDefinitions();
     $this->createContainer();
 
     $this->registerProviders();
     $this->createInstances();
     $this->bootProviders();
-    // $this->registerBaseBindings();
+    $this->registerBaseBindings();
+
+    // $this->initWordpressEntities();
   }
 
   /**
@@ -104,22 +105,9 @@ class Application {
    *
    * @return void
    */
-  protected function loadConfig() {
+  protected function loadConfigDefinitions() {
     $this->builder->addDefinitions($this->basePath() . '/config/app.php');
-  }
 
-  /**
-   * Autoload metaboxes, taxonomies,
-   * posttypes, widgets, sidebars 
-   * from config/app.php.
-   *
-   * @return void
-   */
-  protected function autoload() {
-    $this->builder->addDefinitions($this->basePath() . '/config/autoload.php');
-
-    // @TODO
-    // Create method addDefinitions and merge loadConfig() & autoload()
     do_action('theme_container_add_definitions', $this->builder);
   }
 
@@ -231,13 +219,13 @@ class Application {
   }
 
   /**
-   * Set the shared instance of the container.
+   * Set the shared instance of the application.
    *
-   * @param  \DI\ContainerBuilder|null  $container
+   * @param  \Framework\Application|null  $app
    * @return static
    */
-  public static function setInstance($container = null) {
-    return static::$instance = $container;
+  public static function setInstance($app = null) {
+    return static::$instance = $app;
   }
 
   /**
@@ -280,40 +268,43 @@ class Application {
    * @return instance
    */
   public function createInstances() {
-    $classes = [
-      'sidebars',
-      'metaboxes',
-      'widgets',
-      'navs',
-      'assets',
-      'supports',
-      'customizer'
-    ];
-
     $container = static::$container;
 
     // Make objects
-    foreach ($classes as $key) {
-      $abstract = $container->get($key);
-
-      if (is_array($abstract)) {
-        foreach($abstract as $class) {
-          if (class_exists($class)) {
-            $container->make($class);
+    if ($container->has('wordpress')) {
+      $autoload = $container->get('wordpress');
+      foreach ($autoload as $abstract) {
+        if (is_array($abstract)) {
+          foreach($abstract as $class) {
+            if (class_exists($class)) {
+              $container->make($class);
+            }
           }
+        } elseif (is_string($abstract) && class_exists($abstract)) {
+          $container->make($abstract);
         }
-      } elseif (is_string($abstract) && class_exists($abstract)) {
-        $container->make($abstract);
       }
     }
 
-    // We need customizer instance for access
-    // $customizer->getOption method
-    // $customizer = $container->get('customizer');
-    // $container->set('customizer', $customizer);
+    // Make object for plugin
+    if ($container->has('plugin')) {
+      $pluginAutoload = $container->get('plugin')['wordpress'];
+      if (is_array($pluginAutoload)) {
 
-    // Load Templates
-    //$this->container->make($this->container->get('templates'));
+        foreach($pluginAutoload as $abstract) {
+          if (is_array($abstract)) {
+            foreach($abstract as $class) {
+              if (class_exists($class)) {
+                $container->make($class);
+              }
+            }
+          } elseif (is_string($abstract) && class_exists($abstract)) {
+            $container->make($abstract);
+          }
+        }
+
+      }
+    }
   }
 
   /**
