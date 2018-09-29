@@ -162,7 +162,7 @@ class Metabox {
     // Verify nonce & permissions.
     if ($this->verify($id)) {
       $this->validate($data);
-      $this->save($id, $post);
+      $this->save($id, $data, $post);
     }
   }
 
@@ -273,5 +273,5 @@ class Metabox {
    *
    * @return void
    */
-  public function save($id, $post) {}
+  public function save($id, $data, $post) {}
 }
