@@ -156,8 +156,9 @@ class Metabox {
   public function presave($id, $post) {
     $data = $_POST[$this->id];
 
-    // Return if no data for update.
-    if (!is_array($data)) return;
+    if (empty($data)) {
+      $data = [];
+    }
 
     // Verify nonce & permissions.
     if ($this->verify($id)) {
