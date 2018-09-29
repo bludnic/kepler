@@ -74,9 +74,7 @@ class WordpressServiceProvider extends ServiceProvider {
    */
   private function registerMetaboxes() {
     foreach ($this->metaboxes as $class) {
-      add_action('add_meta_boxes', function () use ($class) {
-        new $class;
-      });
+      new $class;
     }
   }
 
