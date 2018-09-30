@@ -21,7 +21,7 @@ class Meta {
     $meta = get_post_meta($id, $key, $single);
 
     if ($decode) {
-      $meta = json_decode($meta);
+      $meta = json_decode($meta, true);
     }
 
     return $meta;
