@@ -45,7 +45,7 @@ class Meta {
     $id = !is_null($postId) ? $postId : get_the_ID();
 
     if ($encode) {
-      $value = json_encode($value);
+      $value = json_encode($value, JSON_HEX_APOS);
     }
 
     update_post_meta($id, $key, $value, $prevValue);
