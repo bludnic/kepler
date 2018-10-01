@@ -14,6 +14,7 @@ class WordpressServiceProvider extends ServiceProvider {
   protected $thumbnails = [];
   protected $assets = [];
   protected $supports = [];
+  protected $menus = [];
 
   protected $singletons = [];
 
@@ -39,6 +40,7 @@ class WordpressServiceProvider extends ServiceProvider {
     $this->registerThumbnails();
     $this->registerAssets();
     $this->registerSupports();
+    $this->registerAdminMenus();
 
     $this->createSingletons();
   }
@@ -153,6 +155,17 @@ class WordpressServiceProvider extends ServiceProvider {
    */
   private function registerSupports() {
     foreach ($this->supports as $class) {
+      new $class;
+    }
+  }
+
+  /**
+   * Register Administration Menus.
+   *
+   * @return void
+   */
+  private function registerAdminMenus() {
+    foreach ($this->menus as $class) {
       new $class;
     }
   }
