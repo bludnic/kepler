@@ -61,6 +61,21 @@ class AdminMenu {
    */
   public $position;
 
+  /**
+   * List of subpages.
+   *
+   * [
+   *   [
+   *     'name' => 'Menu title',
+   *     'title' => 'Page Title',
+   *     'slug' => 'Menu slug'
+   *   ]
+   * ]
+   *
+   * @var array
+   */
+  public $subpages;
+
   public function __construct() {
     add_action('admin_menu', [$this, 'register']);
   }
@@ -71,6 +86,16 @@ class AdminMenu {
    * @return void
    */
   public function register() {
+    $this->addPage();
+    $this->addSubPages();
+  }
+
+  /**
+   * Add page.
+   *
+   * @return void
+   */
+  private function addPage() {
     add_menu_page(
       $this->pageTitle,
       $this->menuTitle,
@@ -80,6 +105,25 @@ class AdminMenu {
       $this->icon,
       $this->position
     );
+  }
+
+  /**
+   * Add supbpages.
+   *
+   * @return void
+   */
+  private function addSubPages() {
+    if (empty($this->subpages)) return;
+
+    foreach ($this->subpages as $page) {
+      add_submenu_page(
+        $this->slug,
+        $page['title'],
+        $page['name'],
+        $this->capability,
+        $page['slug']
+      );
+    }
   }
 
   /**
