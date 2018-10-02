@@ -15,6 +15,7 @@ class WordpressServiceProvider extends ServiceProvider {
   protected $assets = [];
   protected $supports = [];
   protected $menus = [];
+  protected $taxonomies = [];
 
   protected $singletons = [];
 
@@ -41,6 +42,7 @@ class WordpressServiceProvider extends ServiceProvider {
     $this->registerAssets();
     $this->registerSupports();
     $this->registerAdminMenus();
+    $this->registerTaxonomies();
 
     $this->createSingletons();
   }
@@ -167,6 +169,19 @@ class WordpressServiceProvider extends ServiceProvider {
   private function registerAdminMenus() {
     foreach ($this->menus as $class) {
       new $class;
+    }
+  }
+
+  /**
+   * Register Taxonomies.
+   *
+   * @return void
+   */
+  private function registerTaxonomies() {
+    foreach ($this->taxonomies as $class) {
+      add_action('init', function () use ($class) {
+        new $class;
+      });
     }
   }
 }
