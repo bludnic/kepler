@@ -14,29 +14,14 @@ class Application {
   const VERSION = '0.0.1';
 
   /**
-   * The baase path of the Theme.
+   * The baase path of the Theme / Plugin.
+   *
    * @var string
    */
   protected $basePath;
 
   /**
-   * The custom environment path defined by the developer.
-   *
-   * @var string
-   */
-  protected $environmentPath;
-
-  /**
-   * The environment file to load during bootstrapping.
-   *
-   * @var string
-   */
-  protected $environmentFile = '.env';
-
-  /**
-   * The current globally available container (if any).
-   *
-   * @var static
+   * @var Kepler\Application\Application
    */
   protected static $instance;
 
@@ -285,26 +270,6 @@ class Application {
         }
       }
     }
-
-    // Make object for plugin
-    if ($container->has('plugin')) {
-      $pluginAutoload = $container->get('plugin')['wordpress'];
-      if (is_array($pluginAutoload)) {
-
-        foreach($pluginAutoload as $abstract) {
-          if (is_array($abstract)) {
-            foreach($abstract as $class) {
-              if (class_exists($class)) {
-                $container->make($class);
-              }
-            }
-          } elseif (is_string($abstract) && class_exists($abstract)) {
-            $container->make($abstract);
-          }
-        }
-
-      }
-    }
   }
 
   /**
@@ -313,12 +278,19 @@ class Application {
    * @return void
    */
   private function registerProviders() {
-    $providers = static::$container->get('providers');
+    $container = static::$container;
+
+    // Check if key `providers` isset
+    if (!$container->has('providers')) {
+      return;
+    }
+
+    $providers = $container->get('providers');
 
     if (is_array($providers)) {
       foreach ($providers as $class) {
-        $provider = static::$container->make($class, [
-          'container' => static::$container
+        $provider = $container->make($class, [
+          'container' => $container
         ]);
 
         $provider->register();
