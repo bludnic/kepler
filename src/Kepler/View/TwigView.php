@@ -16,12 +16,17 @@ class TwigView implements View {
   /**
    * Create twig instance.
    *
+   * @param $path string Path to twig templates.
+   * @param $cache string Cache path to twig templates.
    * @return $twig Twig_Environment
    */
-  public function __construct($path = '') {
+  public function __construct($path = '', $cache = false) {
     $loader = new Twig_Loader_Filesystem($path);
     do_action('twig_setup_loader', $loader);
-    $this->engine = new Twig_Environment($loader);
+
+    $this->engine = new Twig_Environment($loader, [
+      'cache' => $cache
+    ]);
 
     $this->registerFunctions();
     $this->registerGlobals();
