@@ -12,10 +12,10 @@
     },
     "autoload": {
         "files": [
-            "src/helpers.php"
+            "src/Kepler/helpers.php"
         ],
         "psr-4": {
-            "Kepler\\": "src/"
+            "Kepler\\": "src/Kepler/"
         }
     }
 }
