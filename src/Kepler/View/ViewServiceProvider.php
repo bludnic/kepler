@@ -20,7 +20,9 @@ class ViewServiceProvider extends ServiceProvider {
 
     $container->set('view', function ($container) {
       $path = $container->get('paths')['directory'] . $container->get('directories')['templates'];
-      return new TwigView($path);
+      $cache = $container->get('paths')['tmp'];
+
+      return new TwigView($path, $cache);
     });
   }
 }
