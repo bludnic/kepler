@@ -1,9 +1,9 @@
 <?php
 
-namespace Framework\View;
+namespace Kepler\View;
 
-use Framework\Support\ServiceProvider;
-use Framework\View\TwigView;
+use Kepler\Support\ServiceProvider;
+use Kepler\View\TwigView;
 
 class ViewServiceProvider extends ServiceProvider {
   /**

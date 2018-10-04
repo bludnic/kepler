@@ -1,6 +1,6 @@
 <?php
 
-namespace Framework\Application;
+namespace Kepler\Application;
 
 use DI\ContainerBuilder;
 use DI\Container;

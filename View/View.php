@@ -1,6 +1,6 @@
 <?php
 
-namespace Framework\View;
+namespace Kepler\View;
 
 interface View {
   public function render($template, $data = []);

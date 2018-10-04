@@ -1,11 +1,11 @@
 <?php
 
-namespace Framework\View;
+namespace Kepler\View;
 
 use Twig_Environment;
 use Twig_Loader_Filesystem;
 use Twig_Function;
-use Framework\View\View;
+use Kepler\View\View;
 
 class TwigView implements View {
   /**

@@ -1,6 +1,6 @@
 <?php
 
-namespace Framework\WP;
+namespace Kepler\WP;
 
 class TemplateFilter {
   /**

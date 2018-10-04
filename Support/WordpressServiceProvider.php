@@ -1,8 +1,8 @@
 <?php
 
-namespace Framework\Support;
+namespace Kepler\Support;
 
-use Framework\Support\ServiceProvider;
+use Kepler\Support\ServiceProvider;
 
 class WordpressServiceProvider extends ServiceProvider {
   protected $posttypes = [];

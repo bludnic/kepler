@@ -1,6 +1,6 @@
 <?php
 
-namespace Framework\Support;
+namespace Kepler\Support;
 
 abstract class ServiceProvider {
   /**

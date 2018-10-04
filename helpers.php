@@ -1,6 +1,6 @@
 <?php
 
-use Framework\Application\Application;
+use Kepler\Application\Application;
 
 if (!function_exists('app')) {
   /**
