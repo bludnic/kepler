@@ -1,0 +1,13 @@
+{
+    "name": "bludnic/kepler",
+    "type": "library",
+    "authors": [
+        {
+            "name": "bludnic",
+            "email": "victor@vlas.pro"
+        }
+    ],
+    "require": {
+        "php-di/php-di": "^6.0"
+    }
+}
