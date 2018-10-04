@@ -9,5 +9,13 @@
     ],
     "require": {
         "php-di/php-di": "^6.0"
+    },
+    "autoload": {
+        "files": [
+            "src/helpers.php"
+        ],
+        "psr-4": {
+            "Kepler\\": "src/"
+        }
     }
 }
