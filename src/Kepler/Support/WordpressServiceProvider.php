@@ -17,6 +17,13 @@ class WordpressServiceProvider extends ServiceProvider {
   protected $menus = [];
   protected $taxonomies = [];
 
+  /**
+   * Instantiate other classes.
+   *
+   * @var array
+   */
+  protected $autoload = [];
+
   protected $singletons = [];
 
   /**
@@ -44,6 +51,8 @@ class WordpressServiceProvider extends ServiceProvider {
     $this->registerAdminMenus();
     $this->registerTaxonomies();
 
+    $this->autoload();
+
     $this->createSingletons();
   }
 
@@ -54,7 +63,7 @@ class WordpressServiceProvider extends ServiceProvider {
    */
   private function createSingletons() {
     foreach ($this->singletons as $key => $class) {
-      $this->container->set($key, new $class);
+      $this->container->set($key, $this->container->make($class));
     }
   } 
 
@@ -182,6 +191,17 @@ class WordpressServiceProvider extends ServiceProvider {
       add_action('init', function () use ($class) {
         new $class;
       });
+    }
+  }
+
+  /**
+   * Autoload Classes.
+   *
+   * @return void
+   */
+  private function autoload() {
+    foreach ($this->autoload as $class) {
+      new $class;
     }
   }
 }
