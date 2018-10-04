@@ -65,10 +65,11 @@ class TwigView implements View {
    * @return void
    */
   private function registerGlobals() {
-    $classes = get_body_class();
-    $classesString = implode(' ', $classes);
+    // @TODO слишком рано запрашивается get_body_class(), тема еще не загружена
+    // $classes = get_body_class();
+    // $classesString = implode(' ', $classes);
 
-    $this->engine->addGlobal('body_classes', $classesString);
+    // $this->engine->addGlobal('body_classes', $classesString);
   }
 
   public function render($template, $data = []) {
