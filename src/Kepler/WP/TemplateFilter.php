@@ -11,6 +11,13 @@ class TemplateFilter {
   protected $container;
 
   /**
+   * Path to templates.
+   *
+   * @var string
+   */
+  protected $path;
+
+  /**
    * Create a new service provider instance.
    *
    * @param \Application\Application $app
@@ -18,6 +25,8 @@ class TemplateFilter {
    */
   public function __construct($container) {
     $this->container = $container;
+
+    $this->path = $this->container->get('paths')['directory'] . $this->container->get('directories')['wptemplates'];
   }
 
   /**
@@ -31,12 +40,12 @@ class TemplateFilter {
    * @param string $path Path to the WP templates inside plugin
    * @return void
    */
-  public function registerSingle($postType, $fileName, $path) {
+  public function single($postType, $fileName) {
     add_filter('single_template', function ($templates) use ($postType, $fileName, $path) {
       global $post;
 
       if ($post->post_type == $postType) {
-        return $path . '/' . $fileName;
+        return $this->path . '/' . $fileName;
       }
 
       return $template;
