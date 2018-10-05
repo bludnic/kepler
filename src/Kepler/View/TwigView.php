@@ -20,15 +20,15 @@ class TwigView implements View {
    * @param $cache string Cache path to twig templates.
    * @return $twig Twig_Environment
    */
-  public function __construct($path = '', $cache = false) {
-    $themeTemplateDir = get_template_directory() . '/resources/templates/yumi';
+  public function __construct($path = '', $cache = false, $debug = false) {
+    $themeTemplateDir = get_template_directory() . '/resources/templates';
     // @TODO custom template folder hook
-    
     $loader = new Twig_Loader_Filesystem([$themeTemplateDir, $path]);
     do_action('twig_setup_loader', $loader);
 
     $this->engine = new Twig_Environment($loader, [
-      'cache' => $cache
+      // 'cache' => $cache, // @TODO cache is not flushing
+      'debug' => $debug
     ]);
 
     $this->registerFunctions();
