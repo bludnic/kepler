@@ -21,10 +21,10 @@ class TwigView implements View {
    * @return $twig Twig_Environment
    */
   public function __construct($path = '', $cache = false) {
-    $themeTemplateDir = get_template_directory() . '/resources/templates';
+    $themeTemplateDir = get_template_directory() . '/resources/templates/yumi';
     // @TODO custom template folder hook
     
-    $loader = new Twig_Loader_Filesystem([$path, $themeTemplateDir]);
+    $loader = new Twig_Loader_Filesystem([$themeTemplateDir, $path]);
     do_action('twig_setup_loader', $loader);
 
     $this->engine = new Twig_Environment($loader, [
