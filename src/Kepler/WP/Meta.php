@@ -45,7 +45,7 @@ class Meta {
     $id = !is_null($postId) ? $postId : get_the_ID();
 
     if ($encode) {
-      $value = json_encode($value);
+      $value = wp_slash(json_encode($value));
     }
 
     update_post_meta($id, $key, $value, $prevValue);
