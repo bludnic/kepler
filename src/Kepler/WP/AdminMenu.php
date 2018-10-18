@@ -76,16 +76,16 @@ class AdminMenu {
    */
   public $subpages;
 
-  public function __construct() {
-    add_action('admin_menu', [$this, 'register']);
-  }
-
   /**
    * Register menu callback.
    *
    * @return void
    */
   public function register() {
+    add_action('admin_menu', [$this, 'init']);
+  }
+
+  public function init() {
     $this->addPage();
     $this->addSubPages();
   }
