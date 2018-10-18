@@ -5,26 +5,8 @@ namespace Kepler\Support;
 use Kepler\Support\ServiceProvider;
 
 class WordpressServiceProvider extends ServiceProvider {
-  protected $posttypes = [];
-  protected $metaboxes = [];
-  protected $widgets = [];
-  protected $sidebars = [];
-  protected $navs = [];
-  protected $shortcodes = [];
-  protected $thumbnails = [];
-  protected $assets = [];
-  protected $supports = [];
-  protected $menus = [];
-  protected $taxonomies = [];
-
-  /**
-   * Instantiate other classes.
-   *
-   * @var array
-   */
-  protected $autoload = [];
-
   protected $singletons = [];
+  protected $components = [];
 
   /**
    * Abstract.
@@ -34,26 +16,25 @@ class WordpressServiceProvider extends ServiceProvider {
   }
 
   /**
+   * Register wordpress components.
+   *
+   * @return void
+   */
+  public function boot() {
+    $this->registerComponents();
+  }
+
+  /**
    * Register WordPress components.
    *
    * @return void
    */
   public function registerComponents() {
-    $this->registerPosttypes();
-    $this->registerMetaboxes();
-    $this->registerWidgets();
-    $this->registerSidebars();
-    $this->registerNavs();
-    $this->registerShortcodes();
-    $this->registerThumbnails();
-    $this->registerAssets();
-    $this->registerSupports();
-    $this->registerAdminMenus();
-    $this->registerTaxonomies();
+    foreach($this->components as $class) {
+      $component = new $class;
 
-    $this->autoload();
-
-    $this->createSingletons();
+      $component->register();
+    }
   }
 
   /**
