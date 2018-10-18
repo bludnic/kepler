@@ -92,13 +92,13 @@ class Metabox {
   protected $rules = [];
 
   /**
-   * Create new metabox.
+   * Register new metabox.
    *
    * @param  $view  View
    * @param  $config  Config
    * @param  $options  Array | Metabox options.
    */
-  public function __construct() {
+  public function register() {
     if (is_admin()) {
       add_action('load-post.php', [$this, 'init']);
       add_action('load-post-new.php', [$this, 'init']);
@@ -109,7 +109,7 @@ class Metabox {
    * Meta box initialization.
    */
   public function init() {
-    add_action('add_meta_boxes', [$this, 'register']);
+    add_action('add_meta_boxes', [$this, 'registerMetabox']);
     add_action('save_post', [$this, 'presave'], 10, 2);
   }
 
@@ -118,7 +118,7 @@ class Metabox {
    *
    * @return void
    */
-  public function register() {
+  public function registerMetabox() {
     add_meta_box(
       $this->id,
       __($this->title, 'textdomain'), // @TODO config('textdomain')
