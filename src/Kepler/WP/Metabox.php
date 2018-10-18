@@ -2,8 +2,6 @@
 
 namespace Kepler\WP;
 
-use Rakit\Validation\Validator;
-
 class Metabox {
   /**
    * View instance for render metabox template.
@@ -254,19 +252,7 @@ class Metabox {
    * @return void
    */
   private function validate($data) {
-    $validator = new Validator;
-
-    $validation = $validator->make($data, $this->rules);
-
-    $validation->validate();
-
-    if ($validation->fails()) {
-      $errors = $validation->errors();
-      echo "<pre>";
-      print_r($errors->firstOfAll());
-      echo "</pre>";
-      exit;
-    }
+    //
   }
 
   /**
